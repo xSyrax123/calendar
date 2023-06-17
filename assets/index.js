@@ -1,6 +1,5 @@
-const CALENDAR = document.getElementById("calendar");
-const TABLE = CALENDAR.querySelector("table");
-const CALENDAR_ROWS = TABLE.querySelectorAll("table tr:not(:first-child)");
+const TABLE = document.querySelector("table");
+const CALENDAR_ROWS = TABLE.querySelectorAll("tr:not(:first-of-type)");
 const PREVIOUS_MONTH_BUTTON = document.getElementById("previous-month");
 const NEXT_MONTH_BUTTON = document.getElementById("next-month");
 const CURRENT_MONTH_ELEMENT = document.getElementById("current-month");
@@ -43,7 +42,7 @@ function updateCalendarCells(year, month) {
 
   for (let i = 0; i < NUM_ROWS_CALENDAR; i++) {
     const ROW = CALENDAR_ROWS[i];
-    const CALENDAR_COLUMNS = ROW.querySelectorAll("td");
+    const CALENDAR_COLUMNS = ROW.children;
 
     for (let j = 0; j < NUM_COLUMNS_CALENDAR; j++) {
       const CELL = CALENDAR_COLUMNS[j];
