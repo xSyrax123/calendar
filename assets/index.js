@@ -47,7 +47,7 @@ function updateCalendarCells(year, month) {
     if (IS_PREV_MONTH) {
       cellDate = LAST_DAY_OF_PREVIOUS_MONTH - (EMPTY_SQUARES_AT_START-i) + 1;
       CELL.classList.add("prev-month");
-    } else if (!IS_PREV_MONTH && date <= LAST_DAY.getDate()) {
+    } else if (date <= LAST_DAY.getDate()) {
       cellDate = date;
       date++;
     } else {
