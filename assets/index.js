@@ -1,10 +1,8 @@
 const TABLE = document.querySelector("table");
-const CALENDAR_ROWS = TABLE.querySelectorAll("tr:not(:first-of-type)");
+const CALENDAR_CELLS = TABLE.querySelectorAll("tr:not(:first-of-type) td");
 const PREVIOUS_MONTH_BUTTON = document.getElementById("previous-month");
 const NEXT_MONTH_BUTTON = document.getElementById("next-month");
 const CURRENT_MONTH_ELEMENT = document.getElementById("current-month");
-const NUM_ROWS_CALENDAR = 6;
-const NUM_COLUMNS_CALENDAR = 7;
 const CURRENT_DATE = new Date();
 
 let currentMonth = CURRENT_DATE.getMonth();
@@ -12,8 +10,8 @@ let currentYear = CURRENT_DATE.getFullYear();
 
 function clearCalendarClasses() {
   /**
-   * Clears the classes of calendar cells that represent the previous month, next month, and the current day.
-   */
+    * Clears the classes of calendar cells that represent the previous month, next month, and the current day.
+    */
   const CELLS_WITH_CLASSES = TABLE.querySelectorAll(
     ".prev-month, .next-month, .actual-day"
   );
@@ -24,13 +22,13 @@ function clearCalendarClasses() {
 
 function updateCalendarCells(year, month) {
   /**
-   * Updates the calendar cells with the dates for the specified year and month.
-   *
-   * @param {number} year - The year value.
-   * @param {number} month - The month value (0-11).
-   */
+    * Updates the calendar cells with the dates for the specified year and month.
+    *
+    * @param {number} year - The year value.
+    * @param {number} month - The month value (0-11).
+    */
   const NEW_DATE = new Date(year, month);
-  const MONTH_NAME = NEW_DATE.toLocaleString("en", { month: "long" });
+  const MONTH_NAME = NEW_DATE.toLocaleString("en", {month: "long"});
   const LAST_DAY = new Date(year, month + 1, 0);
   const LAST_DAY_OF_PREVIOUS_MONTH = new Date(year, month, 0).getDate();
   const EMPTY_SQUARES_AT_START = NEW_DATE.getDay();
@@ -40,45 +38,55 @@ function updateCalendarCells(year, month) {
 
   clearCalendarClasses();
 
-  for (let i = 0; i < NUM_ROWS_CALENDAR; i++) {
-    const ROW = CALENDAR_ROWS[i];
-    const CALENDAR_COLUMNS = ROW.children;
+  for (let i = 0; i < CALENDAR_CELLS.length; i++) {
+    const CELL = CALENDAR_CELLS[i];
+    const IS_PREV_MONTH = i < EMPTY_SQUARES_AT_START;
 
-    for (let j = 0; j < NUM_COLUMNS_CALENDAR; j++) {
-      const CELL = CALENDAR_COLUMNS[j];
-      let cellDate;
+    let cellDate;
 
-      if (i === 0 && j < EMPTY_SQUARES_AT_START) {
-        cellDate = LAST_DAY_OF_PREVIOUS_MONTH - (EMPTY_SQUARES_AT_START-j) + 1;
-        CELL.classList.add("prev-month");
-      } else if (date <= LAST_DAY.getDate()) {
-        cellDate = date;
-        date++;
-      } else {
-        cellDate = nextMonthDate;
-        nextMonthDate++;
-        CELL.classList.add("next-month");
-      }
+    if (IS_PREV_MONTH) {
+      cellDate = LAST_DAY_OF_PREVIOUS_MONTH - (EMPTY_SQUARES_AT_START-i) + 1;
+      CELL.classList.add("prev-month");
+    } else if (!IS_PREV_MONTH && date <= LAST_DAY.getDate()) {
+      cellDate = date;
+      date++;
+    } else {
+      cellDate = nextMonthDate;
+      nextMonthDate++;
+      CELL.classList.add("next-month");
+    }
 
-      CELL.textContent = cellDate;
+    CELL.textContent = cellDate;
 
-      if (
-        currentYear === CURRENT_DATE.getFullYear() &&
-        currentMonth === CURRENT_DATE.getMonth() &&
-        cellDate === CURRENT_DATE.getDate()
-      ) {
-        CELL.classList.add("actual-day");
-      }
+    if (isActualDay(currentYear, currentMonth, CURRENT_DATE, cellDate)) {
+      CELL.classList.add("actual-day");
     }
   }
 
   CURRENT_MONTH_ELEMENT.textContent = `${MONTH_NAME} of ${year}`;
 }
 
+function isActualDay(year, month, date, cellDate) {
+  /**
+    * Checks if a specific date matches the provided year, month, and day.
+    *
+    * @param {number} year - The year value.
+    * @param {number} month - The month value (0-11).
+    * @param {Date} date - The Date object representing the date.
+    * @param {number} cellDate - The day of the month.
+    * @returns {boolean} Returns true if the date matches the provided year, month, and day, otherwise returns false.
+    */
+  return (
+    year === date.getFullYear() &&
+    month === date.getMonth() &&
+    cellDate === date.getDate()
+  );
+}
+
 function previousMonth() {
   /**
-   * Changes the displayed month to the previous month and updates the calendar.
-   */
+    * Changes the displayed month to the previous month and updates the calendar.
+    */
   if (currentMonth === 0) {
     currentYear--;
     currentMonth = 11;
@@ -91,8 +99,8 @@ function previousMonth() {
 
 function nextMonth() {
   /**
-   * Changes the displayed month to the next month and updates the calendar.
-   */
+    * Changes the displayed month to the next month and updates the calendar.
+    */
   if (currentMonth === 11) {
     currentYear++;
     currentMonth = 0;
