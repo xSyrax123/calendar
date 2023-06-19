@@ -9,18 +9,6 @@ let currentMonth = CURRENT_DATE.getMonth();
 let currentYear = CURRENT_DATE.getFullYear();
 
 /**
- * Clears the classes of calendar cells that represent the previous month, next month, and the current day.
- */
-function clearCalendarClasses() {
-  const CELLS_WITH_CLASSES = TABLE.querySelectorAll(
-    ".prev-month, .next-month, .actual-day"
-  );
-  CELLS_WITH_CLASSES.forEach((cell) => {
-    cell.classList.remove("prev-month", "next-month", "actual-day");
-  });
-}
-
-/**
  * Updates the calendar cells with the dates for the specified year and month.
  *
  * @param {number} year - The year value.
@@ -64,6 +52,18 @@ function updateCalendarCells(year, month) {
   }
 
   CURRENT_MONTH_ELEMENT.textContent = `${MONTH_NAME} of ${year}`;
+}
+
+/**
+ * Clears the classes of calendar cells that represent the previous month, next month, and the current day.
+ */
+function clearCalendarClasses() {
+  const CELLS_WITH_CLASSES = TABLE.querySelectorAll(
+    ".prev-month, .next-month, .actual-day"
+  );
+  CELLS_WITH_CLASSES.forEach((cell) => {
+    cell.classList.remove("prev-month", "next-month", "actual-day");
+  });
 }
 
 /**
